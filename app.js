@@ -2,10 +2,22 @@ const CryptoJS = require('crypto-js');
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3300;
+const cors = require('cors');
+
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+  credentials: true
+}
 
 // Middleware untuk melayani file statis
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors(corsOptions));
+
+app.get('/', (req, res) => {
+  res.send('Halo Selamat Datang')
+})
 
 // Enkripsi
 // AES
@@ -112,9 +124,8 @@ app.get('/decryption/RSA', (req, res) => {
 // Akhir RSA
 // Akhir Dekripsi
 
-// Mulai server
 app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
 
-
+module.exports = app;
